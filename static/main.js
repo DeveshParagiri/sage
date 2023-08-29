@@ -11,7 +11,7 @@ $(document).ready(function() {
         
         $("#text").val("");
         $("#messageFormeight").append(userHtml);
-
+        $("#messageFormeight").animate({ scrollTop: 2000000000 }, "slow");
         $.ajax({
             data: {
                 msg: rawText,	
@@ -21,6 +21,7 @@ $(document).ready(function() {
         }).done(function(data) {
             var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="msg_container">' + data + '<span class="msg_time">' + str_time + '</span></div></div>';
             $("#messageFormeight").append($.parseHTML(botHtml));
+            $("#messageFormeight").animate({ scrollTop: 2000000000 }, "slow");
         });
         event.preventDefault();
     });

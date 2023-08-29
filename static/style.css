@@ -11,7 +11,7 @@ body,html{
 	margin-bottom: auto;
 }
 .card{
-	height: 500px;
+	height: 80%;
 	border-radius: 15px !important;
 	background-color: rgba(0,0,0,0.4) !important;
 }
@@ -89,18 +89,16 @@ border-radius: 0 0 15px 15px !important;
 	background-color: rgba(0,0,0,0.3);
 }
 .user_img{
-	height: 70px;
-	width: 70px;
-	border:1.5px solid #f5f6fa;
-
+	height: 90px;
+	width: 90px;
 }
-.user_img_msg{
+/* .user_img_msg{
 	height: 40px;
 	width: 40px;
 	border:1.5px solid #f5f6fa;
+} */
 
-}
-.img_cont{
+/* .img_cont{
 	position: relative;
 	height: 70px;
 	width: 70px;
@@ -108,7 +106,7 @@ border-radius: 0 0 15px 15px !important;
 .img_cont_msg{
 	height: 40px;
 	width: 40px;
-}
+} */
 .offline{
 	background-color: #c23616 !important;
 }

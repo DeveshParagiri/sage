@@ -37,4 +37,4 @@ def get_Chat_response(text):
         return tokenizer.decode(chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
     
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=2000)
