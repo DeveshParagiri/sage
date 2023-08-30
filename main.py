@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, jsonify
-from transformers import AutoModelForCausalLM, AutoTokenizer
-import torch
+from langchain.llms import LlamaCpp
+from langchain import PromptTemplate, LLMChain
+from langchain.callbacks.manager import CallbackManager
+from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
+from langchain.memory import ChatMessageHistory
+import tiktoken
 
-
-tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-medium")
-model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-medium")
+MODEL_PATH = '/Users/deveshparagiri/Downloads/llama-2-7b-chat.ggmlv3.q8_0.bin'
 
 app = Flask(__name__)
 
@@ -17,24 +19,55 @@ def index():
 def chat():
     msg = request.form["msg"]
     input = msg
-    return get_Chat_response(input)
+    try:
+        return get_chat_response(input)
+    except ValueError:
+        return "You have exceeded the token limit! Sorry for the inconvenience!"
 
+def create_prompt() -> PromptTemplate:
 
-def get_Chat_response(text):
+    _DEFAULT_TEMPLATE: str = """You are Dev's personal A.I assistant named S.A.G.E. 
+    You are a helpful, respectful and honest assistant. Please ensure that your responses are socially unbiased and positive in nature.
+    If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.
+    {query}
+    S.A.G.E:
+    """
 
-    # Let's chat for 5 lines
-    for step in range(5):
-        # encode the new user input, add the eos_token and return a tensor in Pytorch
-        new_user_input_ids = tokenizer.encode(str(text) + tokenizer.eos_token, return_tensors='pt')
+    prompt: PromptTemplate = PromptTemplate(
+        input_variables=["query"],
+        template=_DEFAULT_TEMPLATE
+    )
+    return prompt
 
-        # append the new user input tokens to the chat history
-        bot_input_ids = torch.cat([chat_history_ids, new_user_input_ids], dim=-1) if step > 0 else new_user_input_ids
-
-        # generated a response while limiting the total chat history to 1000 tokens, 
-        chat_history_ids = model.generate(bot_input_ids, max_length=1000, pad_token_id=tokenizer.eos_token_id)
-
-        # pretty print last ouput tokens from bot
-        return tokenizer.decode(chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
+def load_model() -> LLMChain:
+    callback_manager: CallbackManager = CallbackManager([StreamingStdOutCallbackHandler()])
     
+    LLama_model: LlamaCpp = LlamaCpp(
+        model_path=MODEL_PATH,
+        temperature=0.2,
+        max_tokens=4096,
+        top_p=1,
+        callback_manager=callback_manager,
+        verbose=True
+    )
+    prompt: PromptTemplate = create_prompt()
+    
+    llm_chain = LLMChain(
+        llm=LLama_model,
+        prompt=prompt
+    )
+    return llm_chain
+
+llm_chain = load_model()
+# history = ChatMessageHistory()
+
+def get_chat_response(input):
+    model_prompt: str = input
+    response: str = llm_chain.run(model_prompt)
+    # history.add_user_message(model_prompt)
+    # history.add_ai_message(response)
+    response = response[:-1] if response[-1]=='\n' else response
+    return response
+
 if __name__ == "__main__":
     app.run(debug=True, port=2000)
