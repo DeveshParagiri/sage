@@ -11,6 +11,7 @@ $(document).ready(function() {
         $("#messageFormeight").animate({ scrollTop: 2000000000 }, "slow");
         var loadingHTML = '<div class="d-flex justify-content-start mb-4"><div class="typing-indicator" id="typing"><span></span><span></span><span></span></div></div>';
         $("#messageFormeight").append($.parseHTML(loadingHTML));
+        // document.getElementById("typing").style.display = 'block';
         $.ajax({
             data: {
                 msg: rawText,	
@@ -22,28 +23,15 @@ $(document).ready(function() {
             const hour_done = date.getHours();
             const minute_done = (date_done.getMinutes()<10?'0':'') + date_done.getMinutes()
             const str_time_done = hour_done+":"+minute_done;
-            document.getElementById("typing").style.display = 'none';
             console.log(data)
             data = data.split("\n").join("<br/>");          
             var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="msg_container"><p id="h7">' + data + '</p><span class="msg_time">' + str_time_done + '</span></div></div>';
+            document.getElementById('typing').remove();
             $("#messageFormeight").append($.parseHTML(botHtml));
             $("#messageFormeight").animate({ scrollTop: 2000000000 }, "slow");
+        }).fail(function() {
+            alert("Error");
         });
         event.preventDefault();
     });
 });
-
-// var i = 0;
-// var txt = 'Lorem ipsum dummy text blabla.';
-var speed = 50;
-
-function typeWriter(data, str_time) {
-    
-    $("#messageFormeight").append($.parseHTML('<div class="d-flex justify-content-start mb-4"><div class="msg_container"><p id="h7"></p></div></div>'))
-    if (i < data.length) {
-        $("#messageFormeight").append($.parseHTML(data.charAt(i)));
-        i++;
-        setTimeout(typeWriter, speed);
-    }
-    $("#messageFormeight").append($.parseHTML('</p><span class="msg_time">' + str_time_done + '</span></div></div>'))
-}
