@@ -18,7 +18,8 @@ Personal A.I Assistant based on your personal data.
 - Fine-tuned on personal dataset
 
 
-## Screenshots
+## Fine-Tuning Colab Code
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+[CODE]([www.google.com](https://colab.research.google.com/drive/1P8GZWs15bTnMSLtwCcu6XzPHFBL5WEyd?usp=sharing)https://colab.research.google.com/drive/1P8GZWs15bTnMSLtwCcu6XzPHFBL5WEyd?usp=sharing)
+
 
