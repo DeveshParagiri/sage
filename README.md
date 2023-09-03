@@ -1,5 +1,5 @@
 
-<img src="static/placeholder.png" width="350" alt="accessibility text">
+<img src="static/placeholder.png" width="700" alt="accessibility text">
 
 
 
