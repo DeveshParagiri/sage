@@ -1,3 +1,7 @@
+# ================================================================================
+# Main script
+# ================================================================================
+
 from flask import Flask, render_template, request
 from utils import setup_dbqa
 
@@ -16,6 +20,7 @@ def chat():
     except ValueError:
         return "You have exceeded the token limit! Sorry for the inconvenience!"
 
+# Gets the response by passing the prompt to QA Object
 def get_chat_response(input):
     response = dbqa({'query': input})
     return response['result']
