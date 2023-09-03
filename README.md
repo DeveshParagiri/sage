@@ -20,6 +20,6 @@ Personal A.I Assistant based on your personal data.
 
 ## Fine-Tuning Colab Code
 
-[CODE](www.google.com](https://colab.research.google.com/drive/1P8GZWs15bTnMSLtwCcu6XzPHFBL5WEyd?usp=sharing)https://colab.research.google.com/drive/1P8GZWs15bTnMSLtwCcu6XzPHFBL5WEyd?usp=sharing)
+[CODE](https://colab.research.google.com/drive/1P8GZWs15bTnMSLtwCcu6XzPHFBL5WEyd?usp=sharing)
 
 
