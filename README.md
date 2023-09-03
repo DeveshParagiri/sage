@@ -1,5 +1,5 @@
 
-![Logo]('static/placeholder.png')
+<img src="static/placeholder.png" width="350" alt="accessibility text">
 
 
 
