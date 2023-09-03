@@ -1,5 +1,5 @@
 
-![Logo](https://drive.google.com/file/d/1SChP38thoDwaRD3mxmXEgEOx09Mkvk8h/view?usp=sharing)
+![Logo]('static/placeholder.png')
 
 
 
