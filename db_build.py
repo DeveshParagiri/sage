@@ -4,11 +4,12 @@
 # ================================================================================
 
 
-from langchain.vectorstores import FAISS
+from langchain.vectorstores import Milvus
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.document_loaders import (PyPDFLoader, 
                                         DirectoryLoader, 
                                          Docx2txtLoader, CSVLoader)
+
 from langchain.embeddings import HuggingFaceEmbeddings
 
 # Embedding model loading
@@ -48,12 +49,18 @@ def load_data(directory):
     insta_following_documents = insta_following_loader.load()
     insta_followers_documents = insta_followers_loader.load()
 
+
     # Adding all loaded documents to one single list of Documents
     corpus = pdf_documents
     corpus.extend(docx_documents)
     corpus.extend(spotify_documents)
     corpus.extend(insta_following_documents)
     corpus.extend(insta_followers_documents)
+    corpus.extend(spotify_documents)
+
+    # Resetting metadata for all type of documents to make it compatible for vector DB
+    for document in corpus:
+        document.metadata = {'source':document.metadata['source']}
 
     # Splitting all documents
     corpus_processed = text_splitter.split_documents(corpus)
@@ -68,10 +75,14 @@ def vectordb_store(corpus_processed):
     Parameters:
     corpus_processed (List): List of Langchain Document objects
 
-    Returns: None
+    Returns: Milvus Vector DB Object
    """
-    vectorstore = FAISS.from_documents(corpus_processed, embeddings)
-    vectorstore.save_local('vectorstore/db_faiss')
-
+    vector_db = Milvus.from_documents(
+        corpus_processed,
+        embedding=embeddings,
+        connection_args={"host": "127.0.0.1", "port": "19530"},
+        collection_name="mystore"
+       )
+    return vector_db
 if __name__=="__main__":
     vectordb_store(load_data('data/'))

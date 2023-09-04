@@ -23,6 +23,7 @@ def chat():
 # Gets the response by passing the prompt to QA Object
 def get_chat_response(input):
     response = dbqa({'query': input})
+    print(response)
     return response['result']
 
 if __name__ == "__main__":

@@ -7,9 +7,10 @@
 from langchain import PromptTemplate
 from langchain.chains import RetrievalQA
 from langchain.embeddings import HuggingFaceEmbeddings
-from langchain.vectorstores import FAISS
+from langchain.vectorstores import Milvus
 from prompts import qa_template
 from llm import llm
+from pymilvus import connections
 
 def set_qa_prompt():
     """ This function wraps the prompt template in a PromptTemplate object
@@ -55,9 +56,16 @@ def setup_dbqa():
    """
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2",
                                        model_kwargs={'device': 'cpu'})
-    vectordb = FAISS.load_local('vectorstore/db_faiss', embeddings)
+    
+    connections.connect("default", host="localhost", port="19530")
+    vector_db: Milvus = Milvus(
+    embedding_function=embeddings,
+    collection_name='mystore',
+    connection_args={"host": "127.0.0.1", "port": "19530"},
+    )
+
     qa_prompt = set_qa_prompt()
-    dbqa = build_retrieval_qa(llm, qa_prompt, vectordb)
+    dbqa = build_retrieval_qa(llm, qa_prompt, vector_db)
     return dbqa
 
 
