@@ -11,6 +11,7 @@ from langchain.vectorstores import Milvus
 from prompts import qa_template
 from llm import llm
 from pymilvus import connections
+from dbconfig import CONNECTION_HOST, CONNECTION_PORT, COLLECTION_NAME
 
 def set_qa_prompt():
     """ This function wraps the prompt template in a PromptTemplate object
@@ -58,10 +59,11 @@ def setup_dbqa():
                                        model_kwargs={'device': 'cpu'})
     
     connections.connect("default", host="localhost", port="19530")
+
     vector_db: Milvus = Milvus(
     embedding_function=embeddings,
-    collection_name='mystore',
-    connection_args={"host": "127.0.0.1", "port": "19530"},
+    connection_args={"host": CONNECTION_HOST, "port": CONNECTION_PORT},
+    collection_name=COLLECTION_NAME
     )
 
     qa_prompt = set_qa_prompt()

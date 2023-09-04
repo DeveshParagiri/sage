@@ -11,7 +11,7 @@ from langchain.document_loaders import (PyPDFLoader,
                                          Docx2txtLoader, CSVLoader)
 
 from langchain.embeddings import HuggingFaceEmbeddings
-
+from dbconfig import CONNECTION_HOST, CONNECTION_PORT, COLLECTION_NAME
 # Embedding model loading
 embeddings = HuggingFaceEmbeddings(model_name='sentence-transformers/all-MiniLM-L6-v2',
                                 model_kwargs={'device': 'cpu'})
@@ -80,8 +80,8 @@ def vectordb_store(corpus_processed):
     vector_db = Milvus.from_documents(
         corpus_processed,
         embedding=embeddings,
-        connection_args={"host": "127.0.0.1", "port": "19530"},
-        collection_name="mystore"
+        connection_args={"host": CONNECTION_HOST, "port": CONNECTION_PORT},
+        collection_name=COLLECTION_NAME
        )
     return vector_db
 if __name__=="__main__":
