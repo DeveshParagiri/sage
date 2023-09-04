@@ -7,9 +7,11 @@ from utils import setup_dbqa
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
+
 
 @app.route("/get", methods=["GET", "POST"])
 def chat():
@@ -20,10 +22,12 @@ def chat():
     except ValueError:
         return "You have exceeded the token limit! Sorry for the inconvenience!"
 
+
 # Gets the response by passing the prompt to QA Object
 def get_chat_response(input):
-    response = dbqa({'query': input})
-    return response['result']
+    response = dbqa({"query": input})
+    return response["result"]
+
 
 if __name__ == "__main__":
     dbqa = setup_dbqa()
