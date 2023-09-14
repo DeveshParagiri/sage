@@ -68,8 +68,7 @@ def load_data(directory):
 
 def vectordb_store(corpus_processed):
     """This function takes in the split documents,
-    creates vector embeddings, indexes with the help
-    of FAISS and stores them locally.
+    creates vector embeddings, indexes and stores them in Milvus.
 
     Parameters:
     corpus_processed (List): List of Langchain Document objects
@@ -79,7 +78,7 @@ def vectordb_store(corpus_processed):
     vector_db = Milvus.from_documents(
         corpus_processed,
         embedding=embeddings,
-        connection_args={"host": CONNECTION_HOST, "port": CONNECTION_PORT},
+        connection_args={"host": "127.0.0.1", "port": "19530"},
         collection_name=COLLECTION_NAME,
     )
     return vector_db
